@@ -1,0 +1,55 @@
+<div class="modal-header">
+    <h4 class="modal-title">Data Akun</h4>
+</div>
+<div class="modal-body">
+    <form name="userForm" ng-submit="buatakun(userForm)" novalidate>
+
+        <div class="form-group" ng-class="{ 'has-error': userForm.name.$touched && userForm.name.$invalid }">
+            <label>Nama lengkap</label>
+            <input type="text" class="form-control" placeholder="Nama" name="name"
+                   required
+                   ng-model="name"
+                   ng-minlength="2">
+            <div class="help-block" ng-messages="userForm.name.$error" ng-show="userForm.name.$touched">
+                <p ng-message="minlength">Nama terlalu pendek</p>
+                <p ng-message="required">Kami butuh nama</p>
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error': userForm.passwd.$touched && userForm.passwd.$invalid }">
+            <label>Password</label>
+            <input class="form-control" placeholder="Password" name="passwd" type="password"
+                   required
+                   ng-model="passwd"
+                   ng-minlength="8">
+            <div class="help-block" ng-messages="userForm.passwd.$error" ng-show="userForm.passwd.$touched">
+                <p ng-message="minlength">Kata sandi terlalu pendek</p>
+                <p ng-message="required">Kami butuh kata sandi</p>
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error': userForm.email.$touched && userForm.email.$invalid }">
+            <label>Email</label>
+            <input class="form-control" type="email" name="email" placeholder="Email" required
+                   ng-model="email">
+            <div class="help-block"
+                 ng-messages="userForm.email.$error"
+                 ng-show="userForm.email.$touched">
+                <p ng-message="required">Email terlalu pendek</p>
+                <p ng-message="email">Email belum valid</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="sel1">Hak Akses</label>
+            <select name="role" class="form-control" id="sel1" ng-model="role">
+                <option>admin</option>
+                <option>pengamat</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>

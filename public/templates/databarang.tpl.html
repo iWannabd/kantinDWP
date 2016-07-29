@@ -1,0 +1,55 @@
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="container">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Data Barang
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-gear"></i> Data Umum
+                    </li>
+                    <li  class="active">
+                        <i class="fa fa-table"></i> Data Barang
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!--Row Input-->
+    <div class="container">
+        <button class="btn btn-default" ng-click="modalbarangbaru()">Input barang baru</button>
+    </div>
+    <br>
+    <!--Barang-->
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-fwfa-money "></i> Tabel</h3>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped">
+                        <thead class="kepala">
+                        <tr>
+                            <th align="center">Kode Barang</th>
+                            <th align="center">Nama Barang</th>
+                            <th align="center">Harga Jual</th>
+                            <th align="center">Aksi</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="barang in barangs">
+                            <td>{{barang.kodebarang}}</td>
+                            <td>{{barang.nama}}</td>
+                            <td>{{barang.harga}}</td>
+                            <td align="center"><a href="" ng-click="editbarang(barang)" class="fa fa-edit"></a>  <a href="" ng-click="deletebarang(barang)" class="fa fa-trash"></a> </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

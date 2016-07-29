@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-
+use App\Permission;
+use App\Role;
 use App\User;
 use App\Http\Requests;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -30,6 +31,7 @@ class AuthenticateController extends Controller
         $newUser = $this->user->create([
             "name" => $request->get("name"),
             "email" => $request->get("email"),
+            "role" => $request->get("role"),
             "password" => bcrypt($request->get("password")),
         ]);
 
@@ -56,5 +58,32 @@ class AuthenticateController extends Controller
         return response()->json(compact('token'));
     }
 
+    public function index(){
+        return response()->json(User::all());
+    }
+
+    public function destroy($id){
+        $user = User::find($id);
+        $user->delete();
+        return response()->json('deleted');
+    }
+
+    public function update(Request $request,$id){
+        $user = User::find($id);
+        $user->name=$request->input('name');
+        $user->email=$request->input('email');
+        $user->role=$request->input('role');
+        $user->password=bcrypt($request->get("password"));
+
+        $user->save();
+        return response()->json('updated');
+    }
+
+    public function val(){
+        $token = $this->jwtauth->getToken();
+        $user = $this->jwtauth->toUser($token);
+
+        return response()->json($user);
+    }
 
 }

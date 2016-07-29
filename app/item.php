@@ -9,7 +9,7 @@ class item extends Model
     //
     protected $fillable = ['nama','kodebarang','harga'];
     
-    public function sale(){
+    public function sales(){
         return $this->hasMany('App\item');
     }
 }

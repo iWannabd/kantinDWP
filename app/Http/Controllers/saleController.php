@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\item;
 use App\sale;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -17,7 +18,11 @@ class saleController extends Controller
      */
     public function index()
     {
-        //
+        $sales = DB::table('sales')
+            ->join('items','sales.item_id','=','items.id')
+            ->select('sales.*','items.nama','items.kodebarang')
+            ->get();
+        return response()->json($sales);
     }
 
     /**
@@ -40,20 +45,17 @@ class saleController extends Controller
     {
         //mencari item dengan kode barang
         $kodebarang = $request->input('kodebarang');
-        $items = item::where('kodebarang','=',$kodebarang)->take(1)->get();
-        $selecteditem = null;
-        foreach ($items as $item) {
-            $selecteditem = $item;
-        }
-        //kalo item dengan kode barang yang dimaksud tidak ada
-        if (is_null($selecteditem)) {
+        $item = item::where('kodebarang','=',$kodebarang)->first();
+
+
+        if (is_null($item)) {
             return response()->json('barang tidak ditemukan '.$kodebarang);
         }
-//        buat sale baru
-        $sale = sale::create($request->all());
+        //buat sale baru
+        $sale = new sale($request->all());
         //simpan sale ke item
-        $selecteditem -> sale() -> save($sale);
-        return response()->json($selecteditem);
+        $item->sales()->save($sale);
+        return response()->json($item);
     }
 
     /**
@@ -91,22 +93,15 @@ class saleController extends Controller
     {
         //mencari item dengan kode barang
         $kodebarang = $request->input('kodebarang');
-        $items = item::where('kodebarang','=',$kodebarang)->take(1)->get();
-        $selecteditem = null;
-        foreach ($items as $item) {
-            $selecteditem = $item;
-        }
-        //kalo item dengan kode barang yang dimaksud tidak ada
-        if (is_null($selecteditem)) {
-            return response()->json('barang tidak ditemukan '.$kodebarang);
-        }
+        $item = item::where('kodebarang','=',$kodebarang)->first();
+
 
         $sale = sale::find($id);
         $sale->outlet = $request->input('outlet');
         $sale->tanggal = $request->input('tanggal');
         $sale->nsold = $request->input('nsold');
 
-        $selecteditem -> sale() -> save($sale);
+        $item -> sales() -> save($sale);
         return response()->json('updated');
     }
 

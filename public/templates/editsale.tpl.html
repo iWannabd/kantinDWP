@@ -1,0 +1,51 @@
+<div class="modal-header">
+    <h4 class="modal-title">Data Penjualan</h4>
+</div>
+<div class="modal-body">
+    <form role="form" name="saleForm" ng-submit="buatSale(saleForm)">
+
+        <div class="form-group">
+            <label>Tanggal</label>
+            <div class='input-group date' id='datetimepicker1' ng-class="{ 'has-error': saleForm.tanggal.$touched && saleForm.tanggal.$invalid }">
+                <input type='date' class="form-control" ng-model="tanggal" name="tanggal" required/>
+                <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+            </div>
+            <div class="help-block" ng-messages="saleForm.tanggal.$error" ng-show="saleForm.tanggal.$touched">
+                <p ng-message="required">Kami butuh tanggal</p>
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error': saleForm.outlet.$touched && saleForm.outlet.$invalid }">
+            <label>No. Outlet</label>
+            <select class="form-control" ng-model="outlet" required name="outlet" >
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+            </select>
+            <div class="help-block" ng-messages="saleForm.outlet.$error" ng-show="saleForm.outlet.$touched">
+                <p ng-message="required">Harus diisi</p>
+            </div>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': saleForm.Selectedbarang.$touched && saleForm.Selectedbarang.$invalid }">
+            <label>Nama atau Kode Barang</label>
+            <input class="form-control" placeholder="Isi nama barang atau kode barang" ng-model="Selectedbarang" required name="Selectedbarang" typeahead="barang as barang.nama for barang in barangs | filter:$viewValue | limitTo:5" typeahead-template-url="templates/barang.tpl.html" autocomplete="off">
+            <div class="help-block" ng-messages="saleForm.Selectedbarang.$error" ng-show="saleForm.Selectedbarang.$touched">
+                <p ng-message="required">Kami butuh tanggal</p>
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error': saleForm.nsold.$touched && saleForm.nsold.$invalid }">
+            <label>Jumlah Terjual</label>
+            <input type="number" class="form-control" placeholder="Isi Jumlah" ng-model="nsold" name="nsold" required >
+            <div class="help-block" ng-messages="saleForm.barang.$error" ng-show="saleForm.barang.$touched">
+                <p ng-message="required">Harus diisi</p>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Simpan</button>
+    </form>
+</div>

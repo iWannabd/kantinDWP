@@ -17,6 +17,12 @@ class itemController extends Controller
     public function index()
     {
         //
+        $items = item::all();
+        return response()->json($items);
+
+//        $items = item::join('sales','sales.item_id','=','items.id')
+//            ->groupBy('item_id')
+//            ->get(['items.id','items.nama','items.kodebarang','items.harga',DB::raw('count(sales.id) as sales')]);
     }
 
     /**
@@ -98,4 +104,5 @@ class itemController extends Controller
         $item -> delete();
         return response()->json('deleted');
     }
+
 }

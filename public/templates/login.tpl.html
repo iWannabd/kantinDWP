@@ -1,0 +1,62 @@
+<style>
+    .center_div{
+        margin: auto;
+        width:100%;
+        transform: translateY(140%);
+    }
+    .container {
+        position: relative;
+        height: 14rem;
+        max-width: none !important;
+
+    }
+
+    .lupa{
+        color :#ffffff;
+    }
+    .btn{
+        color: #fff;
+        background-color: #208C4E;
+    }
+
+    .logintext{
+        color:#fff;
+    }
+
+    a:hover{
+        color:#fff;
+
+    }
+
+    .btn:hover{
+        color: #fff;
+        background-color: #1B7A44;
+    }
+
+    .jumbotron{
+        background-color: #2CC46D;
+    }
+</style>
+<div class="col-md-4 col-md-offset-4">
+    <div class="container center_div">
+        <div class="jumbotron">
+            <h2 class="logintext" align="center"><strong>Kantin DWP </strong></h2>
+            <br>
+            <form>
+                <div class="form-group">
+                    <input type="text" class="form-control input-sm" placeholder="Email" ng-model="email">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control input-sm" placeholder="Password" ng-model="password">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-block btn-sm" value="login" ng-click="login()">Login</button>
+                    <br>
+                    <span class="pull-right">
+							<a href="#" class="lupa">Lupa Password?</a>
+						</span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

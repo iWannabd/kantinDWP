@@ -15,11 +15,11 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(UsersTableSeeder::class);
         $users = array(
-//            ['name' => 'Ryan Chenkie', 'email' => 'ryanchenkie@gmail.com', 'password' => Hash::make('secret')],
-            ['name' => 'Chris Sevilleja', 'email' => 'chris@scotch.io', 'password' => Hash::make('secret')],
-            ['name' => 'Holly Lloyd', 'email' => 'holly@scotch.io', 'password' => Hash::make('secret')],
-            ['name' => 'Adnan Kukic', 'email' => 'adnan@scotch.io', 'password' => Hash::make('secret')],
-            ['name' => 'Isa Setiawan', 'email' => 'azaqokay@gmail.com', 'password' => Hash::make('rahasia')],
+            ['name' => 'Ryan Chenkie','role' => 'admin', 'email' => 'ryanchenkie@gmail.com', 'password' => Hash::make('secret')],
+            ['name' => 'Chris Sevilleja','role' => 'admin', 'email' => 'chris@scotch.io', 'password' => Hash::make('secret')],
+            ['name' => 'Holly Lloyd','role' => 'admin', 'email' => 'holly@scotch.io', 'password' => Hash::make('secret')],
+            ['name' => 'Adnan Kukic','role' => 'admin', 'email' => 'adnan@scotch.io', 'password' => Hash::make('secret')],
+            ['name' => 'Isa Setiawan','role' => 'admin', 'email' => 'azaqokay@gmail.com', 'password' => Hash::make('rahasia')],
 
         );
 

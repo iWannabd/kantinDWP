@@ -1,0 +1,68 @@
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="container">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Data Penjualan
+                </h1>
+                <ol class="breadcrumb">
+                    <li class="active">
+                        <i class="fa fa-table"></i> Data Penjualan
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!--Row Pencarian-->
+    <div class="container">
+        <div class="row">
+            <div class='col-md-4'>
+                <div class="form-group">
+                    <div class='input-group date' id='datetimepicker'>
+                        <input type='date' ng-model="pilihtanggal" class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Penjualan-->
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-fwfa-money "></i>Semua Data Penjualan </h3>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped">
+                        <thead class="kepala">
+                        <tr>
+                            <th align="center">Kode Barang</th>
+                            <th align="center">Tanggal terjual</th>
+                            <th align="center">Nama Barang</th>
+                            <th align="center">Jumlah Terjual</th>
+                            <th align="center">Outlet</th>
+                            <th align="center">Aksi</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="sale in sales | dateFilter:pilihtanggal">
+                            <td>{{sale.kodebarang}}</td>
+                            <td>{{sale.tanggal | date:'dd-MMMM-yyyy'}}</td>
+                            <td>{{sale.nama}}</td>
+                            <td>{{sale.nsold}}</td>
+                            <td>{{sale.outlet}}</td>
+                            <td align="center"><a ng-click="editsale(sale)" href="" class="fa fa-edit"></a>  <a ng-click="deletesale(sale)" href="" class="fa fa-trash"></a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.container-fluid -->

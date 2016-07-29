@@ -4,5 +4,12 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="jquery" level="application" />
+    <orderEntry type="library" name="bootstrap" level="application" />
+    <orderEntry type="library" name="angular" level="application" />
+    <orderEntry type="library" name="satellizer" level="application" />
+    <orderEntry type="library" name="angular-ui-router" level="application" />
+    <orderEntry type="library" name="ui-bootstrap-tpls" level="application" />
+    <orderEntry type="library" name="angular-messages" level="application" />
   </component>
 </module>

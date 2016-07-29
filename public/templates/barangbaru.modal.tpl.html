@@ -1,0 +1,45 @@
+<div class="modal-header">
+    <h4 class="modal-title">Data Barang</h4>
+</div>
+<div class="modal-body">
+    <form name="itemForm" ng-submit="buatbarang(itemForm)" novalidate>
+
+        <div class="form-group" ng-class="{ 'has-error': itemForm.nama.$touched && itemForm.nama.$invalid }">
+            <label>Nama barang</label>
+            <input type="text" class="form-control" placeholder="Nama barang" name="nama"
+                   required
+                   ng-model="nama"
+                   ng-minlength="2">
+            <div class="help-block" ng-messages="itemForm.nama.$error" ng-show="itemForm.nama.$touched">
+                <p ng-message="minlength">Nama barang terlalu pendek</p>
+                <p ng-message="required">Kami butuh nama barang</p>
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error': itemForm.kode.$touched && itemForm.kode.$invalid }">
+            <label>Kode barang</label>
+            <input type="text" class="form-control" placeholder="Kode barang" name="kode"
+                   required
+                   ng-model="kode"
+                   ng-minlength="2">
+            <div class="help-block" ng-messages="itemForm.kode.$error" ng-show="itemForm.kode.$touched">
+                <p ng-message="minlength">Kode barang terlalu pendek</p>
+                <p ng-message="required">Kami butuh kode barang</p>
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error': itemForm.harga.$touched && itemForm.harga.$invalid }">
+            <label>Kode barang</label>
+            <input type="number" class="form-control" placeholder="Rupiah" name="harga"
+                   required
+                   ng-model="harga">
+            <div class="help-block" ng-messages="itemForm.harga.$error" ng-show="itemForm.harga.$touched">
+                <p ng-message="required">Kami butuh harga barang</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>

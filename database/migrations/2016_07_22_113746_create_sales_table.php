@@ -19,6 +19,7 @@ class CreateSalesTable extends Migration
             $table->date('tanggal');
             $table->integer('nsold');
             $table->integer('item_id')->unsigned();
+            $table->foreign('item_id')->references('id')->on('items');
         });
     }
 
