@@ -27,6 +27,7 @@ Route::group(['middleware' => 'jwt.auth'], function (){
     Route::resource('sale','saleController');
     Route::post('auth', 'AuthenticateController@register');
     Route::get('val','AuthenticateController@val');
+    Route::get('saleitem','itemController@itemsale');
     Route::delete('auth/{id}','AuthenticateController@destroy');
     Route::put('auth/{id}','AuthenticateController@update');
 });

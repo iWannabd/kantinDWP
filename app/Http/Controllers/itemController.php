@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\item;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Requests;
 
@@ -23,6 +24,16 @@ class itemController extends Controller
 //        $items = item::join('sales','sales.item_id','=','items.id')
 //            ->groupBy('item_id')
 //            ->get(['items.id','items.nama','items.kodebarang','items.harga',DB::raw('count(sales.id) as sales')]);
+    }
+
+    public function itemsale(){
+        $items = DB::table('items')
+            ->join('sales','sales.item_id','=','items.id')
+            ->select('items.kodebarang','items.nama',DB::raw('SUM(sales.nsold) as jumlah'))
+            ->groupBy('items.kodebarang')
+            ->get();
+
+        return response()->json($items);
     }
 
     /**

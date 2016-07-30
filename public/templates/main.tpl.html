@@ -31,13 +31,15 @@
                         </tr>
                         </thead>
                         <tbody>
-
+                            <tr ng-repeat="itemsale in itemsales">
+                                <td>{{itemsale.kodebarang}}</td>
+                                <td>{{itemsale.nama}}</td>
+                                <td>{{itemsale.jumlah}}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="text-right">
-                    <a href="#">Lihat Semua Penjualan <i class="fa fa-arrow-circle-right"></i></a>
-                </div>
+                
             </div>
         </div>
     </div>

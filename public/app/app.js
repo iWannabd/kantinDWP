@@ -31,7 +31,8 @@ app.config(function ($stateProvider,$urlRouterProvider,$authProvider) {
         })
         .state('dashboard.main',{
             url:'/main',
-            templateUrl:'templates/main.tpl.html'
+            templateUrl:'templates/main.tpl.html',
+            controller:'MainPageController'
         })
         .state('dashboard.inputsales',{
             url:'/inputsales',
@@ -69,25 +70,52 @@ app.controller('DashboardController',function ($auth, $state, $scope,$http) {
     })
 });
 
+app.controller('MainPageController',function ($scope,$http) {
+    $http.get(hostingan+'/saleitem').then(function (response) {
+        $scope.itemsales = response.data;
+    });
+});
+
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
 app.filter('dateFilter',function () {
     return function (items, pilihtanggal) {
         var filtered = [];
-        var date = new Date(pilihtanggal);
-        for (var i = 0; i < items.length ; i++){
-            var item = items[i];
-            if (new Date(item.tanggal) == date) {
-                filtered.push(item);
-            }
+        if (items == null) {
+            console.log(items);
+            return items
         }
-        return filtered;
+        else {
+            console.log(items);
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+                console.log('tanggal item:  '+item.tanggal);
+                console.log('tanggal maksd: '+formatDate(pilihtanggal));
+                if (item.tanggal == formatDate(pilihtanggal)) {
+                    filtered.push(item);
+                }
+            }
+            return filtered;
+        }
     }
 });
 
 app.controller('ViewSalesController',function ($scope,$http,$modal) {
+    $scope.pilihtanggal = new Date();
+
     $http.get(hostingan+'/sale').then(
         function (response) {
             $scope.sales = response.data;
-            console.log($scope.sales)
         }
     );
 
@@ -188,6 +216,10 @@ app.controller('NewSalesController',function ($auth, $http, $scope) {
         $scope.barangs = response.data;
     });
 
+    $http.get(hostingan+'/saleitem').then(function (response) {
+        $scope.itemsales = response.data;
+    });
+
     $scope.buatSale = function (form) {
         if (form.$valid){
             console.log(form);
@@ -201,6 +233,9 @@ app.controller('NewSalesController',function ($auth, $http, $scope) {
             $http.post(hostingan+'/sale',JSON.stringify(newsale)).then(
                 function () {
                     alert('Data dimasukkan');
+                    $http.get(hostingan+'/saleitem').then(function (response) {
+                        $scope.itemsales = response.data;
+                    });
                 },
                 function (response) {
                     console.log(response);

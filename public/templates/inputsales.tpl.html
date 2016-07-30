@@ -79,10 +79,10 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>54#</td>
-                    <td>Soto Ayam</td>
-                    <td>65</td>
+                <tr ng-repeat="itemsale in itemsales">
+                    <td>{{itemsale.kodebarang}}</td>
+                    <td>{{itemsale.nama}}</td>
+                    <td>{{itemsale.jumlah}}</td>
                 </tr>
                 </tbody>
             </table>
