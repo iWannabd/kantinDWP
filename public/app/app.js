@@ -180,7 +180,7 @@ app.controller('ViewSalesController',function ($scope,$http,$modal) {
         $http.get(hostingan+'/item').then(function (response) {
             $scope.barangs = response.data;
         });
-        console.log(sale)
+        console.log(sale);
         $scope.tanggal = new Date(sale.tanggal.replace(/-/g,"/"));
         $scope.outlet = sale.outlet;
         $scope.Selectedbarang = sale;
