@@ -33,15 +33,9 @@
                 </div>
 
                 <div class="form-group" ng-class="{ 'has-error': saleForm.outlet.$touched && saleForm.outlet.$invalid }">
-                    <label>No. Outlet</label>
-                    <select class="form-control" ng-model="outlet" required name="outlet" >
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        <option>6</option>
-                    </select>
+                    <label>Nama Outlet</label>
+                    <input type="text" class="form-control" ng-model="outlet" required name="outlet" >
+                    </input>
                     <div class="help-block" ng-messages="saleForm.outlet.$error" ng-show="saleForm.outlet.$touched">
                         <p ng-message="required">Harus diisi</p>
                     </div>

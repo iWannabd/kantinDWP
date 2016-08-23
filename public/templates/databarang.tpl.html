@@ -29,6 +29,12 @@
                 <h3 class="panel-title"><i class="fa fa-fwfa-money "></i> Tabel</h3>
             </div>
             <div class="panel-body">
+                <span class="label label-info">{{nkantin}} Produk kantin</span>
+                <span class="label label-info">{{nmini}} Produk minimarket</span>
+                <br>
+                <br>
+                <input class="form-control" type="text" placeholder="Cari item" ng-model="cari">
+                <br>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover table-striped">
                         <thead class="kepala">
@@ -36,18 +42,38 @@
                             <th align="center">Kode Barang</th>
                             <th align="center">Nama Barang</th>
                             <th align="center">Harga Jual</th>
+                            <th align="center">Harga Beli</th>
+                            <th align="center">Laba</th>
+                            <th align="center">Produk</th>
                             <th align="center">Aksi</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="barang in barangs">
+                        <tr ng-repeat="barang in barangs | filter:cari | mulaiDari:currentPage*pageSize | limitTo:pageSize">
                             <td>{{barang.kodebarang}}</td>
                             <td>{{barang.nama}}</td>
                             <td>{{barang.harga}}</td>
+                            <td>{{barang.hargabeli}}</td>
+                            <td>{{barang.laba}}</td>
+                            <td>
+                                <div ng-show="barang.kantin">Minimarket</div>
+                                <div ng-show="!barang.kantin">Kantin</div>
+                            </td>
                             <td align="center"><a href="" ng-click="editbarang(barang)" class="fa fa-edit"></a>  <a href="" ng-click="deletebarang(barang)" class="fa fa-trash"></a> </td>
                         </tr>
                         </tbody>
                     </table>
+                    <ul class="pager">
+                        <li ><a href="" ng-show="currentPage != 0" ng-click="currentPage=currentPage-1">Previous</a></li>
+                        <li>halaman {{currentPage+1}} dari {{numberOfPages()}} halaman</li>
+                        <li ><a href="" ng-show="currentPage < barangs.length/pageSize -1" ng-click="currentPage=currentPage+1">Next</a></li>
+                    </ul>
+
+                    <div class="col-sm-1">
+                        <input class="form-control input-sm" type="number" ng-model="pageSize">
+                    </div>
+                    <div class="col-sm-2">Item perhalaman</div>
+
                 </div>
             </div>
         </div>

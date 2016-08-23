@@ -2,13 +2,13 @@
     <h4 class="modal-title">Data Barang</h4>
 </div>
 <div class="modal-body">
-    <form name="itemForm" ng-submit="buatbarang(itemForm)" novalidate>
+    <form name="itemForm" ng-submit="buatbarang(itemForm,barang)" novalidate>
 
         <div class="form-group" ng-class="{ 'has-error': itemForm.nama.$touched && itemForm.nama.$invalid }">
             <label>Nama barang</label>
             <input type="text" class="form-control" placeholder="Nama barang" name="nama"
                    required
-                   ng-model="nama"
+                   ng-model="barang.nama"
                    ng-minlength="2">
             <div class="help-block" ng-messages="itemForm.nama.$error" ng-show="itemForm.nama.$touched">
                 <p ng-message="minlength">Nama barang terlalu pendek</p>
@@ -20,7 +20,7 @@
             <label>Kode barang</label>
             <input type="text" class="form-control" placeholder="Kode barang" name="kode"
                    required
-                   ng-model="kode"
+                   ng-model="barang.kodebarang"
                    ng-minlength="2">
             <div class="help-block" ng-messages="itemForm.kode.$error" ng-show="itemForm.kode.$touched">
                 <p ng-message="minlength">Kode barang terlalu pendek</p>
@@ -29,13 +29,29 @@
         </div>
 
         <div class="form-group" ng-class="{ 'has-error': itemForm.harga.$touched && itemForm.harga.$invalid }">
-            <label>Kode barang</label>
+            <label>Harga Jual</label>
             <input type="number" class="form-control" placeholder="Rupiah" name="harga"
                    required
-                   ng-model="harga">
+                   ng-model="barang.harga">
             <div class="help-block" ng-messages="itemForm.harga.$error" ng-show="itemForm.harga.$touched">
                 <p ng-message="required">Kami butuh harga barang</p>
             </div>
+        </div>
+
+        <div class="checkbox" >
+            <label>
+                <input type="checkbox" name="kantin" ng-model="barang.kantin" checked>Produk minimarket?
+            </label>
+        </div>
+
+        <div class="form-group" ng-show="barang.kantin">
+            <label>Harga beli</label>
+            <input type="number" class="form-control" placeholder="Rupiah" name="hargabeli" ng-model="barang.hargabeli">
+        </div>
+
+        <div class="form-group" >
+            <label>Laba</label>
+            <input disabled type="number" class="form-control" placeholder="Rupiah" name="hargabeli" ng-model="barang.laba">
         </div>
 
         <div class="form-group">

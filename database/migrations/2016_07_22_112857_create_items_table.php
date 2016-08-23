@@ -18,6 +18,9 @@ class CreateItemsTable extends Migration
             $table->string('nama');
             $table->string('kodebarang')->unique();
             $table->double('harga',15,8);
+            $table->double('hargabeli',15,8);
+            $table->boolean('kantin');
+            $table->double('laba',15,8);
 
         });
     }

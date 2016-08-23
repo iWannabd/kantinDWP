@@ -36,6 +36,17 @@ class itemController extends Controller
         return response()->json($items);
     }
 
+    public function newestsale(){
+        $sale = DB::table('sales')
+            ->join('items','sales.item_id','=','items.id')
+            ->select(DB::raw('sum(items.laba)*sales.nsold as totallaba, sum(items.harga)*sales.nsold as totaljual'),'sales.tanggal')
+            ->groupBy('sales.tanggal')
+            ->orderBy('sales.tanggal', 'desc')->get();
+
+        return response()->json($sale);
+
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -97,6 +108,9 @@ class itemController extends Controller
         $item->nama = $request->input('nama');
         $item->kodebarang = $request->input('kodebarang');
         $item->harga = $request->input('harga');
+        $item->hargabeli = $request->input('hargabeli');
+        $item->kantin = $request->input('kantin');
+        $item->laba = $request->input('laba');
         
         $item->save();
         return response()->json('updated');

@@ -14,11 +14,82 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-lg-4 col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-money fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{daily.totaljual|currency:"Rp ":0}}</div> <!--terserah lu-->
+                            <div >Penjualan Harian Terbaru Pada {{daily.tanggal}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="panel panel-green">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-calendar fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{total|currency:"Rp ":0}}</div> <!--pake fungsi-->
+                            <div>Penjualan Bulanan Terbaru Pada Bulan {{bulan}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-bar-chart fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">{{daily.totaljual*0.02|currency:"Rp ":0}}</div> <!--dua puluh persen dari harian-->
+                            <div>Laba Hasil Harian Pada {{daily.tanggal}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--chart-->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Grafik Penjualan dan Laba</h3>
+                </div>
+                <div class="panel-body">
+                    <canvas id="line" class="chart chart-line" chart-data="data"
+                            chart-labels="labels" chart-series="series" chart-options="options"
+                            chart-dataset-override="datasetOverride" chart-click="onClick">
+                    </canvas>
+                    <ul class="pager">
+                        <li class="previous"><a ng-show="cuurentSlide != 0" href="" ng-click="prevslide()">Previous</a></li>
+                        <li>{{cuurentSlide+1}}</li>
+                        <li class="next"><a ng-show="cuurentSlide<data.length/cuurentSlide-1" href="" ng-click="nextslide()">Next</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!--tabel penjualan kemarin-->
+    <row>
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-fwfa-money "></i> Penjualan Terbaru (23/06/2016)</h3>
+                <h3 class="panel-title"><i class="fa fa-fwfa-money "></i> Penjualan Terbaru</h3>
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
@@ -43,5 +114,6 @@
             </div>
         </div>
     </div>
+    </row>
 </div>
 <!-- /.row -->

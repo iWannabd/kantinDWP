@@ -1,7 +1,7 @@
 //env
 var hostingan = 'http://localhost:8000/';
 
-var app = angular.module("kantindwp",['ui.router','ui.bootstrap','satellizer','ngMessages']);
+var app = angular.module("kantindwp",['ui.router','ui.bootstrap','satellizer','ngMessages','chart.js']);
 
 app.config(function ($stateProvider,$urlRouterProvider,$authProvider) {
     $urlRouterProvider.otherwise('/login');
@@ -67,14 +67,85 @@ app.controller('DashboardController',function ($auth, $state, $scope,$http) {
     },function () {
         $auth.logout();
         $state.go('login');
-    })
+    });
 });
 
 app.controller('MainPageController',function ($scope,$http) {
+    $scope.labels = [];
+    $scope.series = ['Laba Harian','Penjualan Harian'];
+    $scope.data = [[],[]];
+
+    $scope.cuurentSlide = 0;
+    $scope.slideSize = 7;
+
+    $scope.onClick = function (points, evt) {
+        console.log(points, evt);
+    };
+    $scope.datasetOverride = [{ yAxisID: 'y-axis-1' }];
+    $scope.options = {
+        scales: {
+            yAxes: [
+                {
+                    id: 'y-axis-1',
+                    type: 'linear',
+                    display: true,
+                    position: 'left'
+                }
+            ]
+        }
+    };
+
+    var laba = [];
+    var jual = [];
+    var label = [];
+
+    function rangeslide(){
+        $scope.labels = label.slice($scope.cuurentSlide*$scope.slideSize,$scope.cuurentSlide*$scope.slideSize+$scope.slideSize);
+        $scope.data[0] = laba.slice($scope.cuurentSlide*$scope.slideSize,$scope.cuurentSlide*$scope.slideSize+$scope.slideSize);
+        $scope.data[1] = jual.slice($scope.cuurentSlide*$scope.slideSize,$scope.cuurentSlide*$scope.slideSize+$scope.slideSize);
+        console.log($scope.cuurentSlide*$scope.slideSize,$scope.slideSize);
+    }
+
+    $scope.nextslide = function () {
+        $scope.cuurentSlide = $scope.cuurentSlide + 1;
+        rangeslide();
+    };
+
+    $scope.prevslide = function () {
+        $scope.cuurentSlide = $scope.cuurentSlide - 1;
+        rangeslide();
+    };
+
+
     $http.get(hostingan+'/saleitem').then(function (response) {
         $scope.itemsales = response.data;
     });
+    $http.get(hostingan+'/newestsale').then(function (response) {
+        var totalsale = response.data;
+        $scope.daily = totalsale[0];
+        var bulanterbaru = totalsale[0].tanggal.split("-")[1];
+        var monthlysale = 0;
+
+        for (i = 0;i<totalsale.length;i++){
+            if(totalsale[i].tanggal.split("-")[1]==bulanterbaru) monthlysale += totalsale[i].totaljual;
+            label.push(totalsale[totalsale.length-i-1].tanggal);
+            jual.push(totalsale[totalsale.length-i-1].totaljual);
+            laba.push(totalsale[totalsale.length-i-1].totallaba);
+        }
+        rangeslide();
+
+        console.log($scope.data);
+        var bulans = ["Januari", "Februari", "Maret", "April", "Mei",
+            "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+        $scope.bulan = bulans[bulanterbaru-1];
+        $scope.total = monthlysale;
+    })
 });
+
+function strToDate(str) {
+    return Date.parse(str.replace(/-/g,"/"));
+}
 
 function formatDate(date) {
     var d = new Date(date),
@@ -107,6 +178,13 @@ app.filter('dateFilter',function () {
             }
             return filtered;
         }
+    }
+});
+
+app.filter('mulaiDari',function () {
+    return function (input,start) {
+        start = +start;
+        return input.slice(start);
     }
 });
 
@@ -228,7 +306,7 @@ app.controller('NewSalesController',function ($auth, $http, $scope) {
                 kodebarang:form.Selectedbarang.$modelValue.kodebarang,
                 tanggal:form.tanggal.$viewValue,
                 nsold:form.nsold.$modelValue
-            }
+            };
             console.log(JSON.stringify(newsale));
             $http.post(hostingan+'/sale',JSON.stringify(newsale)).then(
                 function () {
@@ -247,8 +325,44 @@ app.controller('NewSalesController',function ($auth, $http, $scope) {
 });
 
 app.controller('ItemController',function ($auth, $http, $modal, $scope) {
+    $scope.currentPage = 0;
+    $scope.pageSize = 10;
+    $scope.barangs = [];
+    $scope.nkantin = 0;
+    $scope.nmini = 0;
+
+    var hitunguntung = function (_barang) {
+
+        if (_barang.kantin == 1) {
+            _barang.kantin = true;
+            _barang.produk = "minimarket";
+            $scope.nmini = $scope.nmini + 1;
+        } else if (_barang.kantin == 0){
+            _barang.kantin = false;
+            _barang.produk = "kantin";
+            $scope.nkantin = $scope.nkantin +1;
+        }
+
+        _barang.laba =0;
+
+        if (_barang.kantin){
+            _barang.laba = _barang.harga - _barang.hargabeli;
+        } else {
+            _barang.laba = _barang.harga * 0.02;
+            _barang.hargabeli = 0;
+        }
+        return _barang;
+    };
+
+    $scope.numberOfPages=function(){
+        return Math.ceil($scope.barangs.length/$scope.pageSize);
+    };
     $http.get(hostingan+'/item').then(function (response) {
-        $scope.barangs = response.data;
+        $scope.barangs = [];
+        for (i=0;i<response.data.length;i++){
+            $scope.barangs.push(hitunguntung(response.data[i]));
+        }
+        console.log($scope.barangs );
     });
     $scope.modalbarangbaru = function () {
         var modalinstance = $modal.open({
@@ -258,7 +372,12 @@ app.controller('ItemController',function ($auth, $http, $modal, $scope) {
         });
         modalinstance.result.then( function () {
             $http.get(hostingan+'/item').then(function (response) {
-                $scope.barangs = response.data;
+                $scope.barangs = [];
+                $scope.nkantin = 0;
+                $scope.nmini = 0;
+                for (i=0;i<response.data.length;i++){
+                    $scope.barangs.push(hitunguntung(response.data[i]));
+                }
             });
             }
         );
@@ -278,7 +397,12 @@ app.controller('ItemController',function ($auth, $http, $modal, $scope) {
         modalinstance.result.then(
             function () {
                 $http.get(hostingan+'/item').then(function (response) {
-                    $scope.barangs = response.data;
+                    $scope.barangs = [];
+                    $scope.nkantin = 0;
+                    $scope.nmini = 0;
+                    for (i=0;i<response.data.length;i++){
+                        $scope.barangs.push(hitunguntung(response.data[i]));
+                    }
                 });
             }
         )
@@ -298,7 +422,12 @@ app.controller('ItemController',function ($auth, $http, $modal, $scope) {
         modalinstance.result.then(
             function () {
                 $http.get(hostingan+'/item').then(function (response) {
-                    $scope.barangs = response.data;
+                    $scope.barangs = [];
+                    $scope.nkantin = 0;
+                    $scope.nmini = 0;
+                    for (i=0;i<response.data.length;i++){
+                        $scope.barangs.push(hitunguntung(response.data[i]));
+                    }
                 });
             }
         )
@@ -323,14 +452,11 @@ app.controller('ItemController',function ($auth, $http, $modal, $scope) {
     };
 
     var Barangbaru = function ($scope, $modalInstance, $http) {
-        $scope.buatbarang = function (form) {
+        $scope.buatbarang = function (form,_barang) {
             if (form.$valid){
-                var barang = {
-                    nama:form.nama.$modelValue,
-                    kodebarang:form.kode.$modelValue,
-                    harga:form.harga.$modelValue
-                };
-                $http.post(hostingan+'/item',JSON.stringify(barang)).then(
+                _barang = hitunguntung(_barang);
+                console.log(JSON.stringify(_barang));
+                $http.post(hostingan+'item',JSON.stringify(_barang)).then(
                     function (response) {
                         console.log(response);
                         $modalInstance.close();
@@ -341,24 +467,19 @@ app.controller('ItemController',function ($auth, $http, $modal, $scope) {
                     }
                 )
             } else {
-                alert('isian belum valid')
+                alert('isian belum valid');
             }
         }
     };
 
     var Editbarang = function ($scope, $modalInstance, $http, barang) {
-        $scope.nama=barang.nama;
-        $scope.kode=barang.kodebarang;
-        $scope.harga=barang.harga;
-
-        $scope.buatbarang = function (form) {
+        $scope.barang=barang;
+        console.log(barang);
+        $scope.buatbarang = function (form,_barang) {
             if (form.$valid){
-                var barangbaru = {
-                    nama:form.nama.$modelValue,
-                    kodebarang:form.kode.$modelValue,
-                    harga:form.harga.$modelValue
-                };
-                $http.put(hostingan+'/item/'+barang.id,JSON.stringify(barangbaru)).then(
+                _barang = hitunguntung(_barang);
+                console.log(JSON.stringify(_barang));
+                $http.put(hostingan+'item/'+barang.id,JSON.stringify(_barang)).then(
                     function (response) {
                         console.log(response);
                         $modalInstance.close();
